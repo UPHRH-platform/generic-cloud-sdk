@@ -20,9 +20,10 @@ public class FileStorageController {
     private FileStorageServiceImpl fileService;
 
     @PostMapping("/uploadFile")
-    public String uploadFiletObject(@RequestParam MultipartFile file) throws IOException {
+    public String uploadFiletObject(@RequestParam MultipartFile file,
+                                    @RequestParam("commentTreeId") String commentTreeId) throws IOException {
         log.info("FileStorageController :: uploadFiletoS3()");
-        return fileService.uploadFileObject(file);
+        return fileService.uploadFileObject(file,commentTreeId);
     }
     @GetMapping("/downloadFile")
     public String downloadFile(@RequestParam String fileName) throws IOException {

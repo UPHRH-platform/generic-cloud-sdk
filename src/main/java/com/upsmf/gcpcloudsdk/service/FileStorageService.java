@@ -9,6 +9,6 @@ import java.io.IOException;
 public interface FileStorageService {
 
     String downloadFile(String filePath) throws IOException;
-    String uploadFileObject(MultipartFile file) throws IOException;
+    String uploadFileObject(MultipartFile file,String commentTreeId) throws IOException;
     String deleteFile(String fileName) throws IOException;
 }

@@ -1,16 +1,16 @@
 package com.upsmf.gcpcloudsdk.service.impl;
 
-
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.auth.oauth2.ServiceAccountCredentials;
 import com.google.cloud.storage.*;
+import com.upsmf.gcpcloudsdk.entity.FileUploadEntity;
+import com.upsmf.gcpcloudsdk.exception.FileStorageException;
+import com.upsmf.gcpcloudsdk.repository.FileUploadRepository;
 import com.upsmf.gcpcloudsdk.service.FileStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,9 +30,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class FileStorageServiceImpl implements FileStorageService {
 
-    @Autowired
-    @Qualifier("privateS3Client")
-    private AmazonS3Client privateS3Client;
     @Value("${gcp.client.id}")
     private String gcpClientId;
     @Value("${gcp.client.email}")
@@ -48,10 +44,13 @@ public class FileStorageServiceImpl implements FileStorageService {
     private String gcpFolderName;
     @Value("${gcp.bucket.name}")
     private String gcpBucketName;
+
     @Autowired
     private ObjectMapper mapper;
+    @Autowired
+    private FileUploadRepository fileUploadRepository;
 
-    public String uploadFileObject(MultipartFile file) throws IOException {
+    public String uploadFileObject(MultipartFile file, String commentTreeId) throws IOException {
         Path filePath = null;
         try {
             // validate file
@@ -73,28 +72,30 @@ public class FileStorageServiceImpl implements FileStorageService {
             Bucket bucket = storage.get(gcpBucketName, Storage.BucketGetOption.fields());
             Blob blob = bucket.create(gcpFileName, fileData, contentType);
 
-            // TODO return correct response after testing
-            log.info(blob.toString());
+            /*log.info(blob.toString());
             URL url = blob.signUrl(30, TimeUnit.DAYS);
             log.info("URL - {}", url);
             String urlString = url.toURI().toString();
             ObjectNode urlNode = mapper.createObjectNode();
             urlNode.put("url", urlString);
             ObjectNode node = mapper.createObjectNode();
-            node.put("result", urlNode);
+            node.put("result", urlNode);*/
 
+            String fileLocationPath = gcpBucketName + "/"+ blob.getName();
+            log.info("fileLocationPath: {}",fileLocationPath);
+            ObjectNode node = mapper.createObjectNode();
+            node.put("FileLocationPath",fileLocationPath);
             // Store the URL in the database
-            List<String> urls = new ArrayList<>();
-            urls.add(urlString);
-//            YourDatabaseService.storeFilePaths(urls);
-
-            return mapper.writeValueAsString(node);
-        } catch (IOException e) {
+            List<String> listOfFilePath= new ArrayList<>();
+            listOfFilePath.add(fileLocationPath);
+            FileUploadEntity entity = new FileUploadEntity();
+            entity.setCommentTreeId(commentTreeId);
+            entity.setFilePaths(listOfFilePath);
+            fileUploadRepository.save(entity);
+            return mapper.writeValueAsString(fileLocationPath);
+        } catch (Exception e) {
             log.error("Error while uploading attachment", e);
-            throw new RuntimeException("Error while uploading file.", e);
-        } catch (URISyntaxException e) {
-            log.error("Error converting url ", e);
-            throw new RuntimeException("Error while uploading file.", e);
+            throw new FileStorageException("ERROR",e.getMessage());
         } finally {
             if (filePath != null) {
                 try {
