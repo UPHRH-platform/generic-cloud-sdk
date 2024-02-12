@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SidCloudSdkApplication {
+public class GenericCloudSdkApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SidCloudSdkApplication.class, args);
+		SpringApplication.run(GenericCloudSdkApplication.class, args);
 	}
 
 }
