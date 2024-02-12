@@ -1,0 +1,28 @@
+
+[	java:S112^"FDefine and throw a dedicated exception instead of using a generic one.(‹¡¼é
+[	java:S112a"FDefine and throw a dedicated exception instead of using a generic one.(‹¡¼é
+[	java:S112o"FDefine and throw a dedicated exception instead of using a generic one.(à’õû
+`	java:S112x"FDefine and throw a dedicated exception instead of using a generic one.(Á…˜„üÿÿÿÿ
+a	java:S112€"FDefine and throw a dedicated exception instead of using a generic one.(éßÍîÿÿÿÿÿ
+a	java:S112†"FDefine and throw a dedicated exception instead of using a generic one.(Ò‚Òéüÿÿÿÿ
+n
+java:S2293@"YReplace the type specification in this constructor call with the diamond operator ("<>").(•’‡L
+o
+java:S2293Ž"YReplace the type specification in this constructor call with the diamond operator ("<>").(•’‡L
+o
+java:S2293Ÿ"YReplace the type specification in this constructor call with the diamond operator ("<>").(•’‡L
+Y
+java:S1163†"=Refactor this code to not throw exceptions in finally blocks.(Ò‚Òéüÿÿÿÿ
+P
+java:S1143†"4Remove this throw statement from this finally block.(Ò‚Òéüÿÿÿÿ
+<
+java:S1075D"&Remove this hard-coded path-delimiter.(ÿ˜Ã½
+G
+java:S1135L"2Complete the task associated to this TODO comment.(°æƒ,
+F
+java:S1874T"+Remove this use of "put"; it is deprecated.(à¼‹Êüÿÿÿÿ
+P	java:S125Y"<This block of commented-out lines of code should be removed.(¸ó§l
+‚
+java:S1130m"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(¥½´Œ
+E
+java:S2093v"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
