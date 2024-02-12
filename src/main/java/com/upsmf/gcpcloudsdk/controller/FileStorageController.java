@@ -25,15 +25,7 @@ public class FileStorageController {
         log.info("FileStorageController :: uploadFiletoS3()");
         return fileService.uploadFileObject(file,commentTreeId);
     }
-    @GetMapping("/download{fileName}")
-    public String downloadFile(@PathVariable String fileName) throws IOException {
-        return fileService.downloadFile(fileName);
-    }
-
-    @DeleteMapping("/delete/{fileName}")
-    public ResponseEntity<String> deleteFile(@PathVariable String fileName) throws IOException {
-        return new ResponseEntity<>(fileService.deleteFile(fileName), HttpStatus.OK);
-    }
+    
     @GetMapping("/health")
     public String healthCheck() {
         log.info("FileStorageController :: healthCheck()");
