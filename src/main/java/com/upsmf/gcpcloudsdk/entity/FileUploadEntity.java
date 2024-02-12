@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter
@@ -20,7 +18,8 @@ public class FileUploadEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String commentTreeId;
-    @ElementCollection
-    private List<String> filePaths;
+
+    @Column
+    private String filePaths;
 
 }
